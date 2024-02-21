@@ -1,13 +1,14 @@
-# commitgpt
+# prgpt
 
-Automatically generate commit messages using ChatGPT.
-
-![commitgpt](https://user-images.githubusercontent.com/3975738/205517867-1e7533ae-a8e7-4c0d-afb6-d259635f3f9d.gif)
+Automatically generate Pull Request Message using ChatGPT.
 
 ## How to use?
 
+Clone the repo
+
 ```bash
-npx commitgpt
+npm install -g .
+npx prgpt 
 ```
 
 ### Get OpenAI api key
@@ -31,23 +32,47 @@ this file can be used to change the openai model and other parameters.
 ### `.commitgpt-template` file
 default:
 ```
-suggest 10 commit messages based on the following diff:
+Help me to draft a Pull Request based on the following diff:
 {{diff}}
-commit messages should:
- - follow conventional commits
- - message format should be: <type>[scope]: <description>
 
-examples:
- - fix(authentication): add password regex pattern
- - feat(storage): add new test cases
+current branch name is {{currentBranch}}, if the branch name contain Jira ticket number, please include it to the Jira Link section. 
+Only edit the checklist section if you are sure about the changes you made.
+** Do not contain other message except the Pull Request content **.
+
+The pull request template is
+
+## Objective
+
+** What is the purpose of this Pull Request? **
+
+## Changes
+
+** What changes are being made? **
+
+## Jira Link
+
+**Add Jira Ticket number to simply connect to the ticket. eg. CMS-###**
+
+## Type of Pull Request
+
+- [ ] Feature
+- [ ] Bug Fix
+- [ ] Enhancement
+- [ ] Refactor
+
+## Checklist
+
+- [ ] If I added new functionality, I added tests covering it.
+- [ ] If I fixed a bug, I added a regression test to prevent the bug from silently reappearing again.
+- [ ] I checked whether I should update the docs and did so if necessary.
 ```
 
 this file can be used to change the template used to generate the prompt request. you can modify the template to fit your needs.
 
 ## How it works
 
-- Runs `git diff --cached`
-- Sends the diff to ChatGPT and asks it to suggest commit messages
+- Runs `git diff master...HEAD`
+- Sends the diff to ChatGPT and asks it to suggest pull request messages
 - Shows suggestions to the user
 
 ## Credits
@@ -57,7 +82,3 @@ Some code and approaches were inspired by the awesome projects below:
 - https://github.com/acheong08/ChatGPT
 - https://github.com/transitive-bullshit/chatgpt-api
 - https://github.com/wong2/chat-gpt-google-extension
-
-----
-
-Do you need API docs? Check out [Redocly](https://redocly.com).

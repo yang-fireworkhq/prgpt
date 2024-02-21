@@ -14,18 +14,17 @@ const debug = (...args: unknown[]) => {
   }
 };
 
-const CUSTOM_MESSAGE_OPTION = "[Copy the result to clipboard]...";
 const spinner = ora();
 
 let diff = "";
 try {
-  diff = execSync("git diff --cached").toString();
+  diff = execSync("git diff master...HEAD").toString();
   if (!diff) {
     console.log("No changes to commit.");
     process.exit(0);
   }
 } catch (e) {
-  console.log("Failed to run git diff --cached");
+  console.log("Failed to run git diff master...HEAD");
   process.exit(1);
 }
 
@@ -67,27 +66,18 @@ async function run(diff: string, currentBranch: string) {
 
     const result = escapeCommitMessage(choices[0]);
 
-    console.log(choices)
-
     try {
       const answer = await enquirer.prompt<{ message: string }>({
         type: "select",
         name: "message",
-        message: "Use message or copy to clipboard",
+        message: "Copy the message to clipboard",
         choices,
       });
 
-      if (answer.message === CUSTOM_MESSAGE_OPTION) {
-        var proc = childProcess.spawn("pbcopy");
-        proc.stdin.write(result);
-        proc.stdin.end();
-        return;
-      } else {
-        execSync(`git commit -m '${result}'`, {
-          stdio: "inherit",
-        });
-        return;
-      }
+      var proc = childProcess.spawn("pbcopy");
+      proc.stdin.write(result);
+      proc.stdin.end();
+      return;
     } catch (e) {
       console.log("Aborted.");
       console.log(e);
@@ -97,7 +87,7 @@ async function run(diff: string, currentBranch: string) {
 }
 
 async function getMessages(api: ChatGPTClient, request: string) {
-  spinner.start("Asking ChatGPT 🤖 for commit messages...");
+  spinner.start("Asking ChatGPT 🤖 for Pull Request messages...");
 
   // send a message and wait for the response
   try {
@@ -111,8 +101,6 @@ async function getMessages(api: ChatGPTClient, request: string) {
     spinner.stop();
 
     debug("response: ", response);
-
-    messages.push(CUSTOM_MESSAGE_OPTION);
     return messages;
   } catch (e) {
     spinner.stop();

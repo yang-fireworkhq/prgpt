@@ -1,19 +1,34 @@
-export const defaultPromptTemplate = `Give me the commit messages based on the following diff:
+export const defaultPromptTemplate = `Help me to draft a Pull Request based on the following diff:
 {{diff}}
-your answer should:
- - follow conventional commits
- - the message should start with one message title to conclude all the diff file change, title format should be: <type>[scope]: <description>
- - the message body should contain the detail of the change. Please go over all the diff file and the messages should be detailed as much as possible. 
- - (optional)if the branch name contain the ticket number, please include the ticket number in the message detail body(ref: ticket_number)
 
-** only give me the commit message in your answer, no other warning or note should be included **
+current branch name is {{currentBranch}}, if the branch name contain Jira ticket number, please include it to the Jira Link section. 
+Only edit the checklist section if you are sure about the changes you made.
+** Do not contain other message except the Pull Request content **.
 
-current branch name is {{currentBranch}}
+The pull request template is
 
-examples:
+## Objective
 
-fix(authentication): add password regex pattern
+** What is the purpose of this Pull Request? **
 
-add password to regex pattern and check the detail password
-fullfix the unit test
+## Changes
+
+** What changes are being made? **
+
+## Jira Link
+
+**Add Jira Ticket number to simply connect to the ticket. eg. CMS-###**
+
+## Type of Pull Request
+
+- [ ] Feature
+- [ ] Bug Fix
+- [ ] Enhancement
+- [ ] Refactor
+
+## Checklist
+
+- [ ] If I added new functionality, I added tests covering it.
+- [ ] If I fixed a bug, I added a regression test to prevent the bug from silently reappearing again.
+- [ ] I checked whether I should update the docs and did so if necessary.
 `
