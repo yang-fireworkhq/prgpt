@@ -7,7 +7,7 @@ Automatically generate Pull Request Message using ChatGPT.
 Clone the repo
 
 ```bash
-npm install -g .
+npm run build && npm install -g .
 npx prgpt 
 ```
 

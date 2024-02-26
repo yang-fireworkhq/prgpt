@@ -16,9 +16,13 @@ const debug = (...args: unknown[]) => {
 
 const spinner = ora();
 
+// read parameter from cli
+const args = process.argv.slice(2);
+const [targetBranch, sourceBranch] = args;
+
 let diff = "";
 try {
-  diff = execSync("git diff master...HEAD").toString();
+  diff = execSync(`git diff ${targetBranch ?? "master"}...${sourceBranch ?? "HEAD"}`).toString();
   if (!diff) {
     console.log("No changes to commit.");
     process.exit(0);
