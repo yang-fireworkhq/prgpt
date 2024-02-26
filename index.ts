@@ -28,7 +28,7 @@ try {
     process.exit(0);
   }
 } catch (e) {
-  console.log("Failed to run git diff master...HEAD");
+  console.log(`Failed to run git diff ${targetBranch ?? "master"}...${sourceBranch ?? "HEAD"}`);
   process.exit(1);
 }
 

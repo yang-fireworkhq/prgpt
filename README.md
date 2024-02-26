@@ -7,8 +7,11 @@ Automatically generate Pull Request Message using ChatGPT.
 Clone the repo
 
 ```bash
+npm install
 npm run build && npm install -g .
 npx prgpt 
+// custom branch npx prgpt [target] [source]
+npx prgpt master fix/CMS-1579
 ```
 
 ### Get OpenAI api key
