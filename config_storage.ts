@@ -5,8 +5,8 @@ import { defaultPromptTemplate } from "./template.js";
 const GLOBAL_CONFIG_PATH = `${homedir()}/.commitgpt.json`;
 const LOCAL_CONFIG_PATH = `${process.cwd()}/.commitgpt.json`;
 
-const GLOBAL_PROMPT_TEMPLATE_PATH = `${homedir()}/.commitgpt-template`;
-const LOCAL_PROMPT_TEMPLATE_PATH = `${process.cwd()}/.commitgpt-template`;
+const GLOBAL_PROMPT_TEMPLATE_PATH = `${homedir()}/.prgpt-template`;
+const LOCAL_PROMPT_TEMPLATE_PATH = `${process.cwd()}/.prgpt-template`;
 
 interface Config {
   apiKey?: string;
@@ -59,6 +59,12 @@ function assertTempValid(t: string) {
 }
 
 export function loadPromptTemplate(): string {
+  if (existsSync(LOCAL_CONFIG_PATH)) {
+    const temp = readFileSync(LOCAL_PROMPT_TEMPLATE_PATH, "utf-8");
+    assertTempValid(temp);
+
+    return temp;
+  }
   if (existsSync(GLOBAL_PROMPT_TEMPLATE_PATH)) {
     const temp = readFileSync(GLOBAL_PROMPT_TEMPLATE_PATH, "utf-8");
     assertTempValid(temp);
